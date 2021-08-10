@@ -12,7 +12,9 @@ COPY ./correspond_file_path.yaml /correspond_file_path.yaml
 COPY ./vars.yaml /vars.yaml
 COPY ./template_files /template_files/
 COPY ./template /template/
+COPY ./run.sh /run.sh
 
 
 RUN chmod +x ./builder.py 
-CMD [ "python3", "-m", "builder", "--name", "PROJECT_NAME", "--variable_file", "vars.yaml", "--correspond_file_path", "correspond_file_path.yaml" ]
+RUN chmod +x ./run.sh 
+CMD [ "./run.sh" ]
