@@ -29,16 +29,3 @@ rm:
 .PHONY: rmi 
 rmi:
         docker rmi kooose:ml-system-in-actions:template_0.0.1 
-        
-        
-        
-.PHONY: c_up
-c_up:
-	docker-compose \
-		-f ./$(DOCKER_COMPOSE) \
-		up -d
-
-.PHONY: c_down
-c_down:
-	docker-compose \
-		-f ./$(DOCK
