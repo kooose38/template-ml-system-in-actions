@@ -1,6 +1,6 @@
 .PHONY: build
 build: 
-   docker build -t kooose/ml-system-in-actions:template_0.0.1 .
+     docker build -t kooose/ml-system-in-actions:template_0.0.1 .
 
 .PHONY: run 
 run: 
