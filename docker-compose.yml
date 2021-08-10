@@ -3,8 +3,10 @@ version: "3"
 services:
   template:
     container_name: template
-    imgege: kooose/ml-system-in-actions:template_0.0.1
-    command: ["./run.sh"]
-    entrypoint: [ "python3", "-m", "builder", "--name", "PROJECT_NAME", "--variable_file", "vars.yaml", "--correspond_file_path", "correspond_file_path.yaml" ]
+    image: kooose/ml-system-in-actions:template_0.0.1
+    restart: always
     ports:
-    - "8008:8008"
+      - 8008:8008
+    command: ./run.sh
+    volumes:
+    - ./:/PROJECT_NAME 

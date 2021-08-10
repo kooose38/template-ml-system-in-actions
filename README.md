@@ -2,7 +2,7 @@
 
 ## 目的
 
-推論器に必要なリソースをディレクトリ構成と jinja2 テンプレートで提供します。
+`.onnx`を使った推論期の構築を行います。
 
 ## 前提
 
@@ -10,95 +10,49 @@
 
 ## 使い方
 
-0. カレントディレクトリ
+#### `template`の作成
 
-```sh
-$ pwd
-~/ml-system-in-actions/chapter4_serving_patterns/template_pattern
+
+1. モデルの入出力に合わせたフォーマットで`vars.yaml`を修正する
+
+```
+    name: 推論器の名称
+    model_file_name: sample.onnx # modelのファイル名
+    label_file_name: label.json # labelsのファイル名
+    data_type: float32 # データ型
+    data_structure: (1,4) # データの形状
+    data_sample: [[5.1, 3.5, 1.4, 0.2]] # サンプルデータ
+    prediction_type: float32 # 予測の型
+    prediction_structure: (1,3)
+    prediction_sample: [0.97093159, 0.01558308, 0.01348537]
+    port: 8000 # 推論器の公開ポート
 ```
 
-1. ライブラリのインストール
+2. `docker-compose.yml`と`Dockerfile`の**PROJECT_NAME**の修正
+  
+推論器のフォルダ名になる
 
-```sh
-$ pip install -r requirements.txt
+
+3. `makefile`のコマンドを上から実行する
+  
+build->push->compose up->cp->rm  
+ここまでで推論用のファイルが作成される
+
+
+4. モデルの追加と推論クラスの修正
+
+`./NEW_DIR/models/`に**model_file_name**`.onnx` と**label_file_name**<label.json>を追加する
+`./NEW_DIR/src/ml/prediction.py`の修正
+
+#### 推論サーバーの実行
+
+1. `./NEW_DIR/makefile`を実行する
+
 ```
+  $ make build 
+  $ make run または $ make push | make c_up # PORTが立ち上がるのでAPIを利用できる
 
-2. テンプレートからサンプルの推論機をビルド
+  $ make c_down 
+  $ make rm 
 
-推論器のテンプレートは以下のディレクトリ、ファイル構成となっています。
-
-- template: テンプレートとなるディレクトリ
-- template_files: 変数の変換が必要なファイル一式
-- correspond_file_path.yaml: template_files 配下のファイルを変換後に配置するファイルパスを指定
-- vars.yaml: 変数
-- builder.py: テンプレートから推論器プロジェクトを作成するスクリプト
-
-```sh
-# テンプレートとなるファイル一覧と変換後のファイルパス
-$ cat correspond_file_path.yaml
-# Dockerfile.j2: "{}/Dockerfile"
-# prediction.py.j2: "{}/src/ml/prediction.py"
-# routers.py.j2: "{}/src/app/routers/routers.py"
-# deployment.yml.j2: "{}/manifests/deployment.yml"
-# namespace.yml.j2: "{}/manifests/namespace.yml"
-# makefile.j2: "{}/makefile"
-# docker-compose.yml.j2: "{}/docker-compose.yml"
-
-# 変数
-$ cat vars.yaml
-# name: sample
-# model_file_name: iris_svc.onnx
-# label_file_name: label.json
-# data_type: float32
-# data_structure: (1,4)
-# data_sample: [[5.1, 3.5, 1.4, 0.2]]
-# prediction_type: float32
-# prediction_structure: (1,3)
-# prediction_sample: [0.97093159, 0.01558308, 0.01348537]
-
-# 推論器プロジェクトをビルド
-$ python \
-    -m builder \
-    --name sample \
-    --variable_file vars.yaml \
-    --correspond_file_path correspond_file_path.yaml
-
-# これで./sampleディレクトリ配下に推論器のプログラムが出来上がります。
-```
-
-3. サンプル推論器プロジェクトの確認
-
-作成されたプログラムは以下のような構成になっています。
-モデルとラベルファイルを `sample/models/` ディレクトリに配置すれば完成です。
-
-```sh
-$ tree sample
-# sample
-# ├── Dockerfile
-# ├── __init__.py
-# ├── docker-compose.yml
-# ├── makefile
-# ├── manifests
-# │   ├── deployment.yml
-# │   └── namespace.yml
-# ├── models
-# ├── requirements.txt
-# ├── run.sh
-# └── src
-#     ├── __init__.py
-#     ├── app
-#     │   ├── __init__.py
-#     │   ├── app.py
-#     │   └── routers
-#     │       ├── __init__.py
-#     │       └── routers.py
-#     ├── configurations.py
-#     ├── constants.py
-#     ├── ml
-#     │   ├── __init__.py
-#     │   └── prediction.py
-#     └── utils
-#         ├── __init__.py
-#         ├── logging.conf
-#         └── profiler.py
 ```

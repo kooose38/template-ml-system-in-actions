@@ -13,8 +13,12 @@ COPY ./vars.yaml /vars.yaml
 COPY ./template_files /template_files/
 COPY ./template /template/
 COPY ./run.sh /run.sh
-
+COPY ./app.py /app.py
 
 RUN chmod +x ./builder.py 
+RUN  python -m builder \
+    --name PROJECT_NAME 
+
 RUN chmod +x ./run.sh 
 CMD [ "./run.sh" ]
+
