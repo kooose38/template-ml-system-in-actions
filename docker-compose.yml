@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  template:
+    container_name: template
+    imgege: 
+    entrypoint: [ "python3", "-m", "builder", "--name", "PROJECT_NAME", "--variable_file", "vars.yaml", "--correspond_file_path", "correspond_file_path.yaml" ]
+    volumes:
+    - /:/

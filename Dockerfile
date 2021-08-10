@@ -5,16 +5,14 @@ RUN apt-get -y update && \
     apt-get -y install apt-utils gcc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install --no-cache-dir -r requirements.txt \ 
-    touch __init__.py 
+    pip install --no-cache-dir -r requirements.txt 
 
-COPY ./builder.py /builer.py
+COPY ./builder.py /builder.py
 COPY ./correspond_file_path.yaml /correspond_file_path.yaml
 COPY ./vars.yaml /vars.yaml
 COPY ./template_files /template_files/
-COPY ./templates /templates/
+COPY ./template /template/
 
-VOLUME ./PROJECT_NAME /
 
 RUN chmod +x ./builder.py 
-CMD [ "python3", "-m", "builder.py", "--name", "PROJECT_NAME, "--variable", "vars.yaml", "--correspond_file_path", "correspond_file_path.yaml" ]
+CMD [ "python3", "-m", "builder", "--name", "PROJECT_NAME", "--variable_file", "vars.yaml", "--correspond_file_path", "correspond_file_path.yaml" ]
