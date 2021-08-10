@@ -14,7 +14,7 @@ push:
 c_up:
         docker-compose up -d 
 
- .PHONY: cp 
+.PHONY: cp 
 cp:
         sudo docker cp template:/PROJECT_NAME:./
 
