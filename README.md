@@ -13,6 +13,7 @@
 0. カレントディレクトリ
 
 ```sh
+$ git clone https://github.com/kooose38/template-ml-system-in-actions
 $ pwd
 ~/template-ml-system-in-actions
 ```
