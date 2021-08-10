@@ -20,7 +20,7 @@ cp:
 
 .PHONY: c_down
 c_down:
-	docker stop template
+  docker stop template
 
 .PHONY: rm 
 rm:
