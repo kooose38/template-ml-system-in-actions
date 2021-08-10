@@ -1,24 +1,18 @@
 .PHONY: build
 build: 
-  docker build \
-      -t kooose/ml-system-in-actions:template_0.0.1 .
+   docker build -t kooose/ml-system-in-actions:template_0.0.1 .
 
 .PHONY: run 
 run: 
-    docker run \
-	   -d \
-		--name template \
-		-p 8008:8008 \
-		kooose/ml-system-in-actions:template_0.0.1
+   docker run -d --name template -p 8008:8008 kooose/ml-system-in-actions:template_0.0.1
 
 .PHONY: push 
 push:
-    docker push \
-	     kooose/ml-system-in-actions:template_0.0.1 
+   docker push kooose/ml-system-in-actions:template_0.0.1 
 
 .PHONY: c_up
 c_up:
-  docker-compose up -d 
+   docker-compose up -d 
 
  .PHONY: cp 
 cp:
@@ -30,7 +24,8 @@ c_down:
 
 .PHONY: rm 
 rm:
-    docker rm template 
+   docker rm template 
+
 .PHONY: rmi 
 rmi:
-    docker rmi kooose:ml-system-in-actions:template_0.0.1 
+   docker rmi kooose:ml-system-in-actions:template_0.0.1 
