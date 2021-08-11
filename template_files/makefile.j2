@@ -4,6 +4,7 @@ ABSOLUTE_PATH := $(shell pwd)
 
 DOCKERFILE := Dockerfile
 IMAGE_VERSION := 0.0.1
+DOCKER_COMPOSE := docker-compose.yml
 
 TEMPLATE_PATTERN := {{name}}
 TEMPLATE_PATTERN_PORT := {{port}}
@@ -34,8 +35,12 @@ push:
 
 .PHONY: c_up
 c_up:
-        docker-compose up -d 
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		up -d
 
-.PHONY: c_down 
+.PHONY: c_down
 c_down:
-        docker stop {{name}}
+	docker-compose \
+		-f ./$(DOCKER_COMPOSE) \
+		down
